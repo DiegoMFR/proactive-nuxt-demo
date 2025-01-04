@@ -8,20 +8,24 @@ defineProps({
 
 <template>
   <div>
-    <ul v-if="characters" class="grid grid-cols-4 gap-4">
+    <ul v-if="characters" class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <li v-for="character in characters" :key="character.id">
         <UCard :ui="{ body: { padding: 'sm:p-0 p-0' } }">
           <template #header>
-            {{ character.name }}
+            <p class="truncate" :title="character.name">
+              {{ character.name }}
+            </p>
           </template>
-          <img :src="character.image" :alt="character.name" loading="lazy" class="w-full object-cover">
+          <img :src="character.image" :alt="character.name" loading="lazy" class="w-full min-h-32">
           <template #footer>
-            <div class="truncate ellipsis">
+            <div class="text-sm">
               <p>Status: {{ character.status }}</p>
               <p>Species: {{ character.species }}</p>
-              <p>Gender: {{ character.gender }}</p>
-              <p>Origin: {{ character.origin.name }}</p>
-              <p>Location: {{ character.location.name }}</p>
+            </div>
+            <div class="text-right">
+              <UButton :to="`/rickandmorty/${character.id}`" class="mt-4">
+                Details
+              </UButton>
             </div>
           </template>
         </UCard>
