@@ -3,7 +3,7 @@ import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const id = route.params.id
+const id = (route.params as { id: string }).id
 const characterStore = useCharacterStore()
 
 const character = computed(() => characterStore.characters.find(c => c.id === Number.parseInt(id)))

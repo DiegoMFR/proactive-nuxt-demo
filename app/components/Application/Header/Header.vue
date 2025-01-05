@@ -1,10 +1,13 @@
 <template>
-  <header class="bg-zinc-100 border-b border-b-zinc-200 dark:bg-zinc-700 dark:border-b-zinc-600 py-8">
-    <UContainer class="flex items-center">
+  <header class="bg-white/25 dark:bg-black/25 py-8">
+    <UContainer class="flex" :ui="{ constrained: 'max-w-5xl' }">
       <nav>
         <ul class="flex gap-2">
           <li>
             <ApplicationHeaderLink to="/" label="Home" />
+          </li>
+          <li>
+            <ApplicationHeaderLink to="/rickandmorty" label="Rick and Morty" />
           </li>
           <li>
             <ApplicationHeaderLink to="/assignment" label="Read the assignment instructions" />
