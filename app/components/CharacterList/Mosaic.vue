@@ -21,8 +21,8 @@ defineProps({
             <p><span class="text-black/50 dark:text-white/50">Status:</span> {{ character.status }}</p>
             <p><span class="text-black/50 dark:text-white/50">Species:</span> {{ character.species }}</p>
           </div>
-          <div class="text-right">
-            <UButton :to="`/rickandmorty/${character.id}`" class="mt-4" color="black">
+          <div class="text-right mt-4">
+            <UButton :to="`/rickandmorty/${character.id}`" color="black">
               Details
             </UButton>
           </div>

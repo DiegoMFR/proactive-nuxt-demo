@@ -11,7 +11,7 @@ defineProps({
     <ul v-if="characters" class="space-y-4 min-w-[min(68rem,100vw-4rem)]">
       <li v-for="character in characters" :key="character.id">
         <div class="flex items-center space-x-4 p-4 bg-white/25 dark:bg-black/25 rounded-lg">
-          <img :src="character.image" :alt="character.name" loading="lazy" class="rounded-full w-12">
+          <img :src="character.image" :alt="character.name" loading="lazy" class="rounded-full w-12 h-12">
           <p class="truncate" :title="character.name">
             {{ character.name }}
           </p>

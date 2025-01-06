@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 useHead({
   title: 'Rick and Morty',
 })
+
+const route = useRoute()
+const router = useRouter()
+const layout = ref<'list' | 'grid'>((route.query.layout === 'grid' || route.query.layout === 'list') ? route.query.layout : 'list')
 
 const characterStore = useCharacterStore()
 characterStore.fetchInitialCharacters()
@@ -21,6 +26,14 @@ function handleScroll() {
     characterStore.loadMore()
   }
 }
+
+watch(() => route.query.layout, (newLayout) => {
+  layout.value = (newLayout === 'grid' || newLayout === 'list') ? newLayout : 'list'
+})
+
+function updateLayout(newLayout: string) {
+  router.replace({ query: { ...route.query, layout: newLayout } })
+}
 </script>
 
 <template>
@@ -28,15 +41,7 @@ function handleScroll() {
     <h1 class="text-6xl font-bold text-center m-20 font-serif">
       Rick and Morty
     </h1>
-    <!-- The list -->
-    <CharacterList :characters="characterStore.characters" />
-
-    <!-- Loading sign -->
-    <div v-if="characterStore.isLoading" class="text-center">
-      <UIcon name="i-svg-spinners:3-dots-scale" />
-    </div>
-
-    <!-- End of the list message -->
+    <CharacterList :characters="characterStore.characters" :is-loading="characterStore.isLoading" :layout @update:layout="updateLayout" />
     <div v-if="characterStore.isLastPage" class="text-center p-20">
       <p>No more characters to load.</p>
     </div>
