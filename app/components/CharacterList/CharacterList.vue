@@ -8,16 +8,16 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits(['update:layout'])
 const tabsItems = [{ label: 'List' }, { label: 'Grid' }]
-const selected = ref(tabsItems.findIndex(item => item.label.toLowerCase() === props.layout))
 
-function onChangeTab(index: number) {
-  if (tabsItems[index]) {
-    emit('update:layout', tabsItems[index].label.toLowerCase())
-  }
-}
-
-watch(() => props.layout, (newLayout) => {
-  selected.value = tabsItems.findIndex(item => item.label.toLowerCase() === newLayout)
+const selected = computed({
+  get() {
+    return tabsItems.findIndex(item => item.label.toLowerCase() === props.layout)
+  },
+  set(value) {
+    if (tabsItems[value]) {
+      emit('update:layout', tabsItems[value].label.toLowerCase())
+    }
+  },
 })
 </script>
 
@@ -28,7 +28,6 @@ watch(() => props.layout, (newLayout) => {
       :items="tabsItems"
       class="w-40 mr-0"
       :ui="{ list: { background: 'bg-white/25 dark:bg-black/25', marker: { background: 'bg-white/25 dark:bg-black/25' } } }"
-      @change="onChangeTab"
     />
     <ClientOnly>
       <!-- Will render in client -->
