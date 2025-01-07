@@ -15,8 +15,8 @@ const config = { background: 'bg-white/25 dark:bg-black/25' }
         <USkeleton class="w-12 h-12" :ui="{ ...config, rounded: 'rounded-full' }" />
         <USkeleton class="h-4 w-[140px]" :ui="config" />
         <div class="text-sm grow flex space-x-1">
-          <USkeleton class="h-3 w-[50px]" :ui="config" />
-          <USkeleton class="h-3 w-[40px]" :ui="config" />
+          <USkeleton class="h-5 w-[50px]" :ui="config" />
+          <USkeleton class="h-5 w-[40px]" :ui="config" />
         </div>
         <USkeleton class="h-8 w-[65px]" :ui="config" />
       </div>

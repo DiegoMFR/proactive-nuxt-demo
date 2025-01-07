@@ -41,7 +41,7 @@ function updateLayout(newLayout: string) {
     <h1 class="text-6xl font-bold text-center m-20 font-serif">
       Rick and Morty
     </h1>
-    <CharacterList :characters="characterStore.characters" :is-loading="characterStore.isLoading" :layout @update:layout="updateLayout" />
+    <CharacterList :characters="characterStore.characters" :is-loading="characterStore.isLoading" :layout base-url="/rickandmorty/characters" @update:layout="updateLayout" />
     <div v-if="characterStore.isLastPage" class="text-center p-20">
       <p>No more characters to load.</p>
     </div>

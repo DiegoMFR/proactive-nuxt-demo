@@ -7,7 +7,7 @@
             <ApplicationHeaderLink to="/" label="Home" />
           </li>
           <li>
-            <ApplicationHeaderLink to="/rickandmorty" label="Rick and Morty" />
+            <ApplicationHeaderLink to="/rickandmorty/characters" label="Rick and Morty" />
           </li>
           <li>
             <ApplicationHeaderLink to="/assignment" label="Read the assignment instructions" />

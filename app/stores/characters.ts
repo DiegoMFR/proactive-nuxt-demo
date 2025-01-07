@@ -13,16 +13,32 @@ export const useCharacterStore = defineStore('characters', {
         return
       this.isLoading = true
       this.page++
-      const newData = await useRickAndMortyData<{ results: Character[], info: { pages: number } }>(`character?page=${this.page}`)
-      if (newData.data.value?.results) {
-        this.characters.push(...newData.data.value.results)
+      const { data } = await useRickAndMortyData<{ results: Character[], info: { pages: number } }>(`character?page=${this.page}`)
+      if (data.value?.results) {
+        this.characters.push(...data.value.results)
       }
-      this.isLastPage = this.page >= (newData.data.value?.info.pages ?? 0)
+      this.isLastPage = this.page >= (data.value?.info.pages ?? 0)
       this.isLoading = false
     },
     async fetchInitialCharacters() {
       const { data } = await useRickAndMortyData<{ results: Character[] }>('character')
       this.characters = data.value?.results ?? []
+    },
+    async fetchCharacterById(id: number) {
+      const { data } = await useRickAndMortyData<Character>(`character/${id}`)
+      const existingCharacter = this.characters.find(c => c.id === id)
+
+      if (data.value) {
+        if (existingCharacter) {
+          Object.assign(existingCharacter, data.value)
+        }
+        else {
+          this.characters.push(data.value)
+        }
+      }
+      else {
+        console.error(`Character with id ${id} not found`)
+      }
     },
   },
 })

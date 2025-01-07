@@ -3,6 +3,7 @@ interface Props {
   characters: Character[]
   isLoading: boolean
   layout: 'list' | 'grid'
+  baseUrl: string
 }
 
 const props = defineProps<Props>()
@@ -32,11 +33,11 @@ const selected = computed({
     <ClientOnly>
       <!-- Will render in client -->
       <div v-if="selected === 0">
-        <CharacterListColumn :characters="characters" />
+        <CharacterListColumn :characters="characters" :base-url />
         <CharacterListSkeletonColumn v-if="isLoading" />
       </div>
       <div v-else>
-        <CharacterListMosaic :characters="characters" />
+        <CharacterListMosaic :characters="characters" :base-url />
         <CharacterListSkeletonMosaic v-if="isLoading" />
       </div>
       <template #fallback>
