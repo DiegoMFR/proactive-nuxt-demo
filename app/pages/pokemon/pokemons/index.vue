@@ -3,15 +3,15 @@ import { onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 useHead({
-  title: 'Rick and Morty',
+  title: 'Pokemon',
 })
 
 const route = useRoute()
 const router = useRouter()
 const layout = ref<'list' | 'grid'>((route.query.layout === 'grid' || route.query.layout === 'list') ? route.query.layout : 'list')
 
-const characterStore = useCharacterStore()
-characterStore.fetchInitialCharacters()
+const pokemonStore = usePokemonStore()
+pokemonStore.fetchInitialpokemons()
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
@@ -22,8 +22,8 @@ onUnmounted(() => {
 })
 
 function handleScroll() {
-  if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500 && !characterStore.isLoading) {
-    characterStore.loadMore()
+  if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500 && !pokemonStore.isLoading) {
+    pokemonStore.loadMore()
   }
 }
 
@@ -39,31 +39,31 @@ function updateLayout(newLayout: string) {
 <template>
   <UContainer :ui="{ constrained: 'max-w-6xl' }">
     <h1 class="text-6xl font-bold text-center m-20 font-serif">
-      Rick and Morty
+      Pokémon
     </h1>
     <CharacterList :layout @update:layout="updateLayout">
       <!-- Column template -->
       <template #columnItem>
-        <CharacterListColumn :characters="characterStore.characters">
+        <CharacterListColumn :characters="pokemonStore.pokemons">
           <template #default="{ character, index }">
-            <RickandmortyRowItem :character="character" base-url="/rickandmorty/characters" :index />
+            <PokemonRowItem :character="character" :index />
           </template>
         </CharacterListColumn>
-        <CharacterListSkeletonColumn v-if="characterStore.isLoading" class="my-4" />
+        <CharacterListSkeletonColumn v-if="pokemonStore.isLoading" class="my-4" />
       </template>
 
       <!-- Mosaic template -->
       <template #mosaicItem>
-        <CharacterListMosaic :characters="characterStore.characters">
+        <CharacterListMosaic :characters="pokemonStore.pokemons">
           <template #default="{ character, index }">
-            <RickandmortyMosaicItem :character="character" base-url="/rickandmorty/characters" :index />
+            <PokemonMosaicItem :character="character" :index />
           </template>
         </CharacterListMosaic>
-        <CharacterListSkeletonMosaic v-if="characterStore.isLoading" class="my-4" />
+        <CharacterListSkeletonMosaic v-if="pokemonStore.isLoading" class="my-4" />
       </template>
     </CharacterList>
-    <div v-if="characterStore.isLastPage" class="text-center p-20">
-      <p>No more characters to load.</p>
+    <div v-if="pokemonStore.isLastPage" class="text-center p-20">
+      <p>No more Pokemons to load.</p>
     </div>
   </UContainer>
 </template>

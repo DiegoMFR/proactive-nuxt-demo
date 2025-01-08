@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useCharacterStore = defineStore('characters', {
+export const useCharacterStore = defineStore('rickandmorty', {
   state: () => ({
     characters: [] as Character[],
     page: 1,
@@ -13,11 +13,11 @@ export const useCharacterStore = defineStore('characters', {
         return
       this.isLoading = true
       this.page++
-      const { data } = await useRickAndMortyData<{ results: Character[], info: { pages: number } }>(`character?page=${this.page}`)
-      if (data.value?.results) {
-        this.characters.push(...data.value.results)
+      const data = await $rickAndMorty<{ results: Character[], info: { pages: number } }>(`character?page=${this.page}`)
+      if (data.results) {
+        this.characters.push(...data.results)
       }
-      this.isLastPage = this.page >= (data.value?.info.pages ?? 0)
+      this.isLastPage = this.page >= (data.info.pages ?? 0)
       this.isLoading = false
     },
     async fetchInitialCharacters() {

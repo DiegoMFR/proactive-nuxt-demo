@@ -3,7 +3,7 @@ interface Props {
   itemsCount?: number
 }
 
-const { itemsCount = 4 } = defineProps<Props>()
+const { itemsCount = 3 } = defineProps<Props>()
 
 const config = { background: 'bg-white/25 dark:bg-black/25' }
 </script>

@@ -10,6 +10,9 @@
             <ApplicationHeaderLink to="/rickandmorty/characters" label="Rick and Morty" />
           </li>
           <li>
+            <ApplicationHeaderLink to="/pokemon/pokemons" label="Pokémon" />
+          </li>
+          <li>
             <ApplicationHeaderLink to="/assignment" label="Read the assignment instructions" />
           </li>
         </ul>

@@ -1,9 +1,6 @@
 <script setup lang="ts">
 interface Props {
-  characters: Character[]
-  isLoading: boolean
   layout: 'list' | 'grid'
-  baseUrl: string
 }
 
 const props = defineProps<Props>()
@@ -12,7 +9,7 @@ const tabsItems = [{ label: 'List' }, { label: 'Grid' }]
 
 const selected = computed({
   get() {
-    return tabsItems.findIndex(item => item.label.toLowerCase() === props.layout)
+    return tabsItems.findIndex(item => item.label.toLowerCase() === props.layout) || 0
   },
   set(value) {
     if (tabsItems[value]) {
@@ -33,12 +30,10 @@ const selected = computed({
     <ClientOnly>
       <!-- Will render in client -->
       <div v-if="selected === 0">
-        <CharacterListColumn :characters="characters" :base-url />
-        <CharacterListSkeletonColumn v-if="isLoading" />
+        <slot name="columnItem" />
       </div>
       <div v-else>
-        <CharacterListMosaic :characters="characters" :base-url />
-        <CharacterListSkeletonMosaic v-if="isLoading" />
+        <slot name="mosaicItem" />
       </div>
       <template #fallback>
         <!-- Will render in server -->
