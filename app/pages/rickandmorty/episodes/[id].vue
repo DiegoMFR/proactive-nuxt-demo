@@ -1,6 +1,6 @@
 <template>
   <UContainer :ui="{ constrained: 'max-w-4xl' }">
-    <h1 class="text-6xl font-bold text-center font-serif mt-4">
+    <h1 class="text-6xl font-bold text-center font-serif mt-20">
       Not implemented yet!
     </h1>
     <p class="text-lg">

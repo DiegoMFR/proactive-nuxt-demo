@@ -21,7 +21,7 @@ defineProps<Props>()
         <p><span class="text-black/50 dark:text-white/50">Height:</span> {{ character.height }}</p>
       </div>
       <div class="text-right mt-4">
-        <UButton :to="`/pokemon/pokemons/${character.id}`" color="black">
+        <UButton :to="`/pokemon/pokemons/${character.name}`" color="black">
           Details
         </UButton>
       </div>

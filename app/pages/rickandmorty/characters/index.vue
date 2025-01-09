@@ -13,19 +13,18 @@ const layout = ref<'list' | 'grid'>((route.query.layout === 'grid' || route.quer
 const characterStore = useCharacterStore()
 characterStore.fetchInitialCharacters()
 
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
-
-function handleScroll() {
-  if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500 && !characterStore.isLoading) {
-    characterStore.loadMore()
-  }
-}
+useInfiniteScroll(
+  window,
+  async () => {
+    if (!characterStore.isLoading) {
+      await characterStore.loadMore()
+    }
+  },
+  {
+    distance: 10,
+    canLoadMore: () => !characterStore.isLastPage,
+  },
+)
 
 watch(() => route.query.layout, (newLayout) => {
   layout.value = (newLayout === 'grid' || newLayout === 'list') ? newLayout : 'list'
@@ -44,7 +43,7 @@ function updateLayout(newLayout: string) {
     <CharacterList :layout @update:layout="updateLayout">
       <!-- Column template -->
       <template #columnItem>
-        <CharacterListColumn :characters="characterStore.characters">
+        <CharacterListColumn :characters="characterStore.characters" class="mb-20">
           <template #default="{ character, index }">
             <RickandmortyRowItem :character="character" base-url="/rickandmorty/characters" :index />
           </template>

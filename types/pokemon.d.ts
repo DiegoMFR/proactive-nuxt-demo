@@ -286,5 +286,5 @@ interface Pokemon {
 
 interface PokemonListItem {
   name: string
-  url: string
+  url?: string
 }

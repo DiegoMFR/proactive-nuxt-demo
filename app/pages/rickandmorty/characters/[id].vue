@@ -21,14 +21,18 @@ useHead({
       <h1 class="text-6xl font-bold text-center m-20 font-serif">
         {{ character.name }}
       </h1>
-      <div class="flex items-center space-x-4 p-4 bg-white/25 dark:bg-black/25 rounded-2xl shadow">
-        <img :src="character.image" :alt="character.name" class="object-cover min-h-32 float-left rounded-md">
-        <div class="text-lg p-10">
-          <p><span class="text-black/50 dark:text-white/50 block md:inline-block w-24">Status:</span> {{ character.status }}</p>
-          <p><span class="text-black/50 dark:text-white/50 block md:inline-block w-24">Species:</span> {{ character.species }}</p>
-          <p><span class="text-black/50 dark:text-white/50 block md:inline-block w-24">Gender:</span> {{ character.gender }}</p>
-          <p><span class="text-black/50 dark:text-white/50 block md:inline-block w-24">Origin:</span> {{ character.origin.name }}</p>
-          <p><span class="text-black/50 dark:text-white/50 block md:inline-block w-24">Location:</span> {{ character.location.name }}</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 place-items-center p-4 bg-white/25 dark:bg-black/25 rounded-2xl shadow">
+        <img :src="character.image" :alt="character.name" class="object-cover min-h-32 rounded-md">
+        <div class="text-lg p-5 lg:w-full">
+          <p><span class="label">Status:</span> {{ character.status }}</p>
+          <p><span class="label">Species:</span> {{ character.species }}</p>
+          <p v-if="character.type">
+            <span class="label">Type:</span> {{ character.type }}
+          </p>
+          <p><span class="label">Gender:</span> {{ character.gender }}</p>
+          <p><span class="label">Origin:</span> {{ character.origin.name }}</p>
+          <p><span class="label">Location:</span> {{ character.location.name }}</p>
+          <p><span class="label">Created:</span> {{ useDateFormat(character.created, 'DD-MMM-YYYY') }}</p>
         </div>
       </div>
 
@@ -48,3 +52,9 @@ useHead({
     </div>
   </UContainer>
 </template>
+
+<style scoped>
+.label {
+  @apply text-black/50 dark:text-white/50 inline-block w-1/2;
+}
+</style>

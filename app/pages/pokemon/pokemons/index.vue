@@ -11,21 +11,21 @@ const router = useRouter()
 const layout = ref<'list' | 'grid'>((route.query.layout === 'grid' || route.query.layout === 'list') ? route.query.layout : 'list')
 
 const pokemonStore = usePokemonStore()
-pokemonStore.fetchInitialpokemons()
+await pokemonStore.fetchInitialPokemons()
+await pokemonStore.fetchFullPokemons(pokemonStore.pokemonList)
 
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
-
-function handleScroll() {
-  if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500 && !pokemonStore.isLoading) {
-    pokemonStore.loadMore()
-  }
-}
+useInfiniteScroll(
+  window,
+  async () => {
+    if (!pokemonStore.isLoading) {
+      await pokemonStore.loadMore()
+    }
+  },
+  {
+    distance: 10,
+    canLoadMore: () => !pokemonStore.isLastPage,
+  },
+)
 
 watch(() => route.query.layout, (newLayout) => {
   layout.value = (newLayout === 'grid' || newLayout === 'list') ? newLayout : 'list'
@@ -41,7 +41,7 @@ function updateLayout(newLayout: string) {
     <h1 class="text-6xl font-bold text-center m-20 font-serif">
       Pokémon
     </h1>
-    <CharacterList :layout @update:layout="updateLayout">
+    <CharacterList :layout :is-loading="pokemonStore.isLoading" class="mb-20" @update:layout="updateLayout">
       <!-- Column template -->
       <template #columnItem>
         <CharacterListColumn :characters="pokemonStore.pokemons">
@@ -49,7 +49,7 @@ function updateLayout(newLayout: string) {
             <PokemonRowItem :character="character" :index />
           </template>
         </CharacterListColumn>
-        <CharacterListSkeletonColumn v-if="pokemonStore.isLoading" class="my-4" />
+        <CharacterListSkeletonColumn v-if="pokemonStore.isLoading" class="mt-4 mb-20" />
       </template>
 
       <!-- Mosaic template -->
@@ -59,7 +59,7 @@ function updateLayout(newLayout: string) {
             <PokemonMosaicItem :character="character" :index />
           </template>
         </CharacterListMosaic>
-        <CharacterListSkeletonMosaic v-if="pokemonStore.isLoading" class="my-4" />
+        <CharacterListSkeletonMosaic v-if="pokemonStore.isLoading" class="mt-4 mb-20" />
       </template>
     </CharacterList>
     <div v-if="pokemonStore.isLastPage" class="text-center p-20">

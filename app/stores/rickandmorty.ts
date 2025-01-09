@@ -1,44 +1,53 @@
 import { defineStore } from 'pinia'
 
-export const useCharacterStore = defineStore('rickandmorty', {
-  state: () => ({
-    characters: [] as Character[],
-    page: 1,
-    isLoading: false,
-    isLastPage: false,
-  }),
-  actions: {
-    async loadMore() {
-      if (this.isLoading || this.isLastPage)
-        return
-      this.isLoading = true
-      this.page++
-      const data = await $rickAndMorty<{ results: Character[], info: { pages: number } }>(`character?page=${this.page}`)
-      if (data.results) {
-        this.characters.push(...data.results)
-      }
-      this.isLastPage = this.page >= (data.info.pages ?? 0)
-      this.isLoading = false
-    },
-    async fetchInitialCharacters() {
-      const { data } = await useRickAndMortyData<{ results: Character[] }>('character')
-      this.characters = data.value?.results ?? []
-    },
-    async fetchCharacterById(id: number) {
-      const { data } = await useRickAndMortyData<Character>(`character/${id}`)
-      const existingCharacter = this.characters.find(c => c.id === id)
+export const useCharacterStore = defineStore('rickandmorty', () => {
+  const characters = ref<Character[]>([])
+  const page = ref(1)
+  const isLoading = ref(false)
+  const isLastPage = ref(false)
 
-      if (data.value) {
-        if (existingCharacter) {
-          Object.assign(existingCharacter, data.value)
-        }
-        else {
-          this.characters.push(data.value)
-        }
+  const loadMore = async () => {
+    if (isLoading.value || isLastPage.value)
+      return
+    isLoading.value = true
+    page.value++
+    const data = await $rickAndMorty<{ results: Character[], info: { pages: number } }>(`character?page=${page.value}`)
+    if (data.results) {
+      characters.value.push(...data.results)
+    }
+    isLastPage.value = page.value >= (data.info.pages ?? 0)
+    isLoading.value = false
+  }
+
+  const fetchInitialCharacters = async () => {
+    const { data } = await useRickAndMortyData<{ results: Character[] }>('character')
+    characters.value = data.value?.results ?? []
+  }
+
+  const fetchCharacterById = async (id: number) => {
+    const { data } = await useRickAndMortyData<Character>(`character/${id}`)
+    const existingCharacter = characters.value.find(c => c.id === id)
+
+    if (data.value) {
+      if (existingCharacter) {
+        Object.assign(existingCharacter, data.value)
       }
       else {
-        console.error(`Character with id ${id} not found`)
+        characters.value.push(data.value)
       }
-    },
-  },
+    }
+    else {
+      console.error(`Character with id ${id} not found`)
+    }
+  }
+
+  return {
+    characters,
+    page,
+    isLoading,
+    isLastPage,
+    loadMore,
+    fetchInitialCharacters,
+    fetchCharacterById,
+  }
 })

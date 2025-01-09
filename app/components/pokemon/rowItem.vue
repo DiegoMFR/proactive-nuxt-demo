@@ -21,7 +21,7 @@ defineProps<Props>()
         Height: {{ character.height }}
       </UBadge>
     </div>
-    <UButton :to="`/pokemon/pokemons/${character.id}`" color="black">
+    <UButton :to="`/pokemon/pokemons/${character.name}`" color="black">
       Details
     </UButton>
   </div>
