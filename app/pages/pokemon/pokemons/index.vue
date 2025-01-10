@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-
 useHead({
   title: 'Pokemon',
 })
