@@ -1,7 +1,5 @@
-import { defineStore } from 'pinia'
-
 export const useCharacterStore = defineStore('rickandmorty', () => {
-  const characters = ref<Character[]>([])
+  const characters = ref<RickAndMorty.Character[]>([])
   const page = ref(1)
   const isLoading = ref(false)
   const isLastPage = ref(false)
@@ -11,7 +9,7 @@ export const useCharacterStore = defineStore('rickandmorty', () => {
       return
     isLoading.value = true
     page.value++
-    const data = await $rickAndMorty<{ results: Character[], info: { pages: number } }>(`character?page=${page.value}`)
+    const data = await $rickAndMorty<{ results: RickAndMorty.Character[], info: { pages: number } }>(`character?page=${page.value}`)
     if (data.results) {
       characters.value.push(...data.results)
     }
@@ -20,12 +18,12 @@ export const useCharacterStore = defineStore('rickandmorty', () => {
   }
 
   const fetchInitialCharacters = async () => {
-    const { data } = await useRickAndMortyData<{ results: Character[] }>('character')
+    const { data } = await useRickAndMortyData<{ results: RickAndMorty.Character[] }>('character')
     characters.value = data.value?.results ?? []
   }
 
   const fetchCharacterById = async (id: number) => {
-    const { data } = await useRickAndMortyData<Character>(`character/${id}`)
+    const { data } = await useRickAndMortyData<RickAndMorty.Character>(`character/${id}`)
     const existingCharacter = characters.value.find(c => c.id === id)
 
     if (data.value) {

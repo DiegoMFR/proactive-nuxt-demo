@@ -1,0 +1,1 @@
+type LayoutType = 'list' | 'grid'

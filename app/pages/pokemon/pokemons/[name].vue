@@ -18,7 +18,7 @@ useHead({
 <template>
   <UContainer :ui="{ constrained: 'max-w-4xl' }">
     <section v-if="character">
-      <h1 class="text-6xl font-bold text-center m-20 font-serif">
+      <h1 class="text-6xl font-bold text-center m-20 font-serif capitalize">
         {{ character.name }}
       </h1>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 place-items-center p-4 bg-white/25 dark:bg-black/25 rounded-2xl shadow">
