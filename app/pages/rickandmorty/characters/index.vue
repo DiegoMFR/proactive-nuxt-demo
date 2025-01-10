@@ -30,7 +30,7 @@ useInfiniteScroll(
     <CharacterList ref="characterListRef" :layout @update:layout="updateLayout">
       <!-- Column template -->
       <template #columnItem>
-        <CharacterListColumn :characters="characterStore.characters" class="mb-20">
+        <CharacterListColumn :characters="characterStore.characters">
           <template #default="{ character, index }">
             <RickandmortyRowItem :character="character" base-url="/rickandmorty/characters" :index />
           </template>
