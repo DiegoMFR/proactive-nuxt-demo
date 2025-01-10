@@ -9,19 +9,12 @@ export const useCharacterStore = defineStore('rickandmorty', () => {
       return
     isLoading.value = true
     page.value++
-    try {
-      const data = await $rickAndMorty<{ results: RickAndMorty.Character[], info: { pages: number } }>(`character?page=${page.value}`, { headers: { method: 'GET' } })
-      if (data.results) {
-        characters.value.push(...data.results)
-      }
-      isLastPage.value = page.value >= (data.info.pages ?? 0)
+    const data = await $rickAndMorty<{ results: RickAndMorty.Character[], info: { pages: number } }>(`character?page=${page.value}`, { headers: { method: 'GET' } })
+    if (data.results) {
+      characters.value.push(...data.results)
     }
-    catch (error) {
-      console.error('Failed to load more characters:', error)
-    }
-    finally {
-      isLoading.value = false
-    }
+    isLastPage.value = page.value >= (data.info.pages ?? 0)
+    isLoading.value = false
   }
 
   const fetchInitialCharacters = async () => {
