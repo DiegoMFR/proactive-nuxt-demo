@@ -74,9 +74,15 @@ export default defineNuxtConfig({
     endpoints: {
       pokemon: {
         url: 'https://pokeapi.co/api/v2',
+        headers: {
+          method: 'GET',
+        },
       },
       rickAndMorty: {
         url: 'https://rickandmortyapi.com/api',
+        headers: {
+          method: 'GET',
+        },
       },
     },
   },

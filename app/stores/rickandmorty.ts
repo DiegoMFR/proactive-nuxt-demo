@@ -9,7 +9,7 @@ export const useCharacterStore = defineStore('rickandmorty', () => {
       return
     isLoading.value = true
     page.value++
-    const data = await $rickAndMorty<{ results: RickAndMorty.Character[], info: { pages: number } }>(`character?page=${page.value}`)
+    const data = await $rickAndMorty<{ results: RickAndMorty.Character[], info: { pages: number } }>(`character?page=${page.value}`, { headers: { method: 'GET' } })
     if (data.results) {
       characters.value.push(...data.results)
     }
@@ -18,7 +18,7 @@ export const useCharacterStore = defineStore('rickandmorty', () => {
   }
 
   const fetchInitialCharacters = async () => {
-    const { data } = await useRickAndMortyData<{ results: RickAndMorty.Character[] }>('character')
+    const { data } = await useRickAndMortyData<{ results: RickAndMorty.Character[] }>('character', { headers: { method: 'GET' } })
     characters.value = data.value?.results ?? []
   }
 

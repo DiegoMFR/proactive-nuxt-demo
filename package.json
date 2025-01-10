@@ -15,6 +15,7 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "netlify-cli": "^18.0.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
