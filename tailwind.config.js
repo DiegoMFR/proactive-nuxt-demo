@@ -1,6 +1,6 @@
 import TailwindTypography from '@tailwindcss/typography'
 
-module.exports = {
+export default {
   theme: {
     extend: {
       keyframes: {

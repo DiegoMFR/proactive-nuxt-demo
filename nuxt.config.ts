@@ -75,13 +75,15 @@ export default defineNuxtConfig({
       pokemon: {
         url: 'https://pokeapi.co/api/v2',
         headers: {
-          method: 'GET',
+          'method': 'GET',
+          'Content-Type': 'application/json',
         },
       },
       rickAndMorty: {
         url: 'https://rickandmortyapi.com/api',
         headers: {
-          method: 'GET',
+          'method': 'GET',
+          'Content-Type': 'application/json',
         },
       },
     },
