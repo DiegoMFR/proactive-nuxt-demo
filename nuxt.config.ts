@@ -28,7 +28,7 @@ export default defineNuxtConfig({
     },
     prerender: {
       crawlLinks: false,
-      routes: ['/', '/assignment'],
+      routes: ['/', '/rickandmorty/characters', '/pokemon/pokemons'],
     },
     preset: 'netlify',
   },

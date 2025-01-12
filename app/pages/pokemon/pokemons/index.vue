@@ -11,7 +11,7 @@ const page = ref(Number(route.query.page) || 0)
 
 await pokemonStore.fetchInitialPages(page.value)
 if (!pokemonStore.pokemons.length) {
-  await pokemonStore.fetchFullPokemons(pokemonStore.pokemonList)
+  pokemonStore.fetchFullPokemons(pokemonStore.pokemonList)
 }
 
 useInfiniteScroll(
