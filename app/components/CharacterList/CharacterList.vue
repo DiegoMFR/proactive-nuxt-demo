@@ -38,8 +38,8 @@ const selected = computed({
           </div>
           <template #fallback>
             <!-- Will render in server -->
-            <CharacterListSkeletonColumn v-if="item.label === 'List'" :items-count="10" />
-            <CharacterListSkeletonMosaic v-else :items-count="10" />
+            <CharacterListSkeletonColumn v-if="item.label === 'List'" :items-count="20" />
+            <CharacterListSkeletonMosaic v-else :items-count="20" />
           </template>
         </ClientOnly>
       </template>

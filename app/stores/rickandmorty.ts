@@ -1,15 +1,27 @@
+import { hydrateOnIdle } from 'vue'
+
 export const useCharacterStore = defineStore('rickandmorty', () => {
   const characters = ref<RickAndMorty.Character[]>([])
-  const page = ref(1)
-  const isLoading = ref(false)
-  const isLastPage = ref(false)
+  const page = ref<number>(1)
+  const isLoading = ref<boolean>(false)
+  const isLastPage = ref<boolean>(false)
+
+  interface RickAndMortyData {
+    info: {
+      count: number
+      pages: number
+      next: string
+      prev: string
+    }
+    results: RickAndMorty.Character[]
+  }
 
   const loadMore = async () => {
     if (isLoading.value || isLastPage.value)
       return
     isLoading.value = true
     page.value++
-    const data = await $rickAndMorty<{ results: RickAndMorty.Character[], info: { pages: number } }>(`character?page=${page.value}`, { headers: { method: 'GET' } })
+    const data = await $rickAndMorty<RickAndMortyData>(`character?page=${page.value}`, { headers: { method: 'GET' } })
     if (data.results) {
       characters.value.push(...data.results)
     }
@@ -17,9 +29,25 @@ export const useCharacterStore = defineStore('rickandmorty', () => {
     isLoading.value = false
   }
 
-  const fetchInitialCharacters = async () => {
-    const { data } = await useRickAndMortyData<{ results: RickAndMorty.Character[] }>('character', { headers: { method: 'GET' } })
-    characters.value = data.value?.results ?? []
+  const fetchInitialPages = async (pages: number) => {
+    if (characters.value.length)
+      // this should run only when there are no characters in the store
+      return
+    isLoading.value = true
+    const requests = []
+    for (let i = 1; i <= pages; i++) {
+      requests.push($rickAndMorty<RickAndMortyData>(`character?page=${i}`, { headers: { method: 'GET' } }))
+    }
+    const results = await Promise.all(requests)
+    results.forEach((result) => {
+      if (result.results) {
+        characters.value.push(...result.results)
+      }
+    })
+    page.value = pages
+    isLoading.value = false
+    const lastResult = results.pop()
+    isLastPage.value = page.value >= (lastResult?.info.pages ?? 1)
   }
 
   const fetchCharacterById = async (id: number) => {
@@ -45,7 +73,7 @@ export const useCharacterStore = defineStore('rickandmorty', () => {
     isLoading,
     isLastPage,
     loadMore,
-    fetchInitialCharacters,
+    fetchInitialPages,
     fetchCharacterById,
   }
 })

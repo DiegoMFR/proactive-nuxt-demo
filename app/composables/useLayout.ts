@@ -26,8 +26,6 @@ export function useLayout() {
 
   return {
     layout,
-    savedLayout,
-    validateLayoutType,
     updateLayout,
   }
 }

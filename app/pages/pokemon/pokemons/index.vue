@@ -3,23 +3,34 @@ useHead({
   title: 'Pokemon',
 })
 
+const router = useRouter()
+const route = useRoute()
 const pokemonStore = usePokemonStore()
 const { layout, updateLayout } = useLayout()
-await pokemonStore.fetchInitialPokemons()
-await pokemonStore.fetchFullPokemons(pokemonStore.pokemonList)
+const page = ref(Number(route.query.page) || 0)
+
+await pokemonStore.fetchInitialPages(page.value)
+if (!pokemonStore.pokemons.length) {
+  await pokemonStore.fetchFullPokemons(pokemonStore.pokemonList)
+}
 
 useInfiniteScroll(
   window,
   async () => {
-    if (!pokemonStore.isLoading) {
-      await pokemonStore.loadMore()
-    }
+    await pokemonStore.loadMore()
   },
   {
     distance: 500,
-    canLoadMore: () => !pokemonStore.isLastPage,
+    canLoadMore: () => !pokemonStore.isLastPage && !pokemonStore.isLoading,
   },
 )
+
+watch(() => pokemonStore.page, (newPage) => {
+  if (newPage) {
+    router.replace({ query: { ...route.query, page: newPage } })
+    page.value = newPage
+  }
+})
 </script>
 
 <template>

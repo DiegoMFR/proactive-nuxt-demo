@@ -3,23 +3,31 @@ useHead({
   title: 'Rick and Morty',
 })
 
+const route = useRoute()
+const router = useRouter()
+
 const characterStore = useCharacterStore()
-characterStore.fetchInitialCharacters()
-const characterListRef = ref()
 const { layout, updateLayout } = useLayout()
+const page = ref(Number(route.query.page) || 1)
+await characterStore.fetchInitialPages(page.value)
 
 useInfiniteScroll(
   window,
   async () => {
-    if (!characterStore.isLoading) {
-      await characterStore.loadMore()
-    }
+    await characterStore.loadMore()
   },
   {
     distance: 100,
-    canLoadMore: () => !characterStore.isLastPage,
+    canLoadMore: () => !characterStore.isLastPage && !characterStore.isLoading,
   },
 )
+
+watch(() => characterStore.page, (newPage) => {
+  if (newPage) {
+    router.replace({ query: { ...route.query, page: newPage } })
+    page.value = newPage
+  }
+})
 </script>
 
 <template>
@@ -27,7 +35,7 @@ useInfiniteScroll(
     <h1 class="text-6xl font-bold text-center m-20 font-serif">
       Rick and Morty
     </h1>
-    <CharacterList ref="characterListRef" :layout @update:layout="updateLayout">
+    <CharacterList :layout @update:layout="updateLayout">
       <!-- Column template -->
       <template #columnItem>
         <CharacterListColumn :characters="characterStore.characters">
