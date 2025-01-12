@@ -17,7 +17,7 @@ useInfiniteScroll(
     await characterStore.loadMore()
   },
   {
-    distance: 100,
+    distance: 500,
     canLoadMore: () => !characterStore.isLastPage && !characterStore.isLoading,
   },
 )

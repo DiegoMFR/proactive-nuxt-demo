@@ -17,8 +17,6 @@ export const useCharacterStore = defineStore('rickandmorty', () => {
   }
 
   const loadMore = async () => {
-    if (isLoading.value || isLastPage.value)
-      return
     isLoading.value = true
     page.value++
     const data = await $rickAndMorty<RickAndMortyData>(`character?page=${page.value}`, { headers: { method: 'GET' } })
