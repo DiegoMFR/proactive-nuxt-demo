@@ -1,9 +1,9 @@
-// @vitest-environment nuxt
-
-import { mockComponent, mountSuspended } from '@nuxt/test-utils/runtime'
+import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { beforeEach, describe, expect, it } from 'vitest'
 import CharacterList from './CharacterList.vue'
 
+// At component level, we need to use a unit test approach, to observe the component behavior in isolation (but without testing implementation details)
+// therefore we use vue test utils
 async function factory({ props, slots }: { props: any, slots: any }) {
   return mountSuspended(CharacterList, {
     props,

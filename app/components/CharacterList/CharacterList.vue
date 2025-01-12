@@ -1,6 +1,6 @@
 <script setup lang="ts">
 interface Props {
-  layout: 'list' | 'grid'
+  layout: LayoutType
 }
 
 const props = defineProps<Props>()
